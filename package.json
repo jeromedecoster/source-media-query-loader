@@ -1,0 +1,29 @@
+{
+  "name": "source-media-query-loader",
+  "version": "0.1.0",
+  "description": "Load image according to media queries and source nodes",
+  "repository": "jeromedecoster/source-media-query-loader",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "source",
+    "media query",
+    "media queries",
+    "image",
+    "loader"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --hot --inline",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "source-media-query-builder": "^0.1.0"
+  }
+}

@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>source-media-query-loader</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.png">
+    <style type="text/css">
+      img { opacity: 1; }
+      button { font-size: 18px; outline: none; margin-top: 10px; }
+    </style>
+  </head>
+  <body>
+    <div step="one">
+      <button action="add-good-node">add #good</button>
+      <button action="find-bad-node">find #bad</button>
+      <button action="add-good-object">add {good}</button>
+      <button action="add-bad-object">add {bad}</button>
+    </div>
+    <div step="two">
+      <button action="start">start</button>
+      <button action="stop">stop</button>
+      <button action="kill">kill</button>
+    </div>
+
+    <div id="bad">
+      <source src="lizard.jpg"/>
+    </div>
+
+    <div id="good">
+      <sOurce src="lizard.jpg"  x="0.663774403" Y="0.375375375" hd="kangaroo.jpg" fake=12  media="(Width <= 700px)"/>
+      <source src="dolphin.jpg" x=".363" y=".484257871" media="(900px >= width > 700px)" />
+      <source src="bird.jpg"    x=".643178411"  y=".641" media="(width > 900px)" />
+      <div className='background-test' style="color:red;"/>
+    </div>
+
+    <img/>
+
+    <script src="bundle.js"></script>
+  </body>
+</html>
