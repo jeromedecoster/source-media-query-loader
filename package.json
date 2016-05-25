@@ -1,6 +1,6 @@
 {
   "name": "source-media-query-loader",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Load image according to media queries and source nodes",
   "repository": "jeromedecoster/source-media-query-loader",
   "main": "index.js",
@@ -12,6 +12,8 @@
     "media query",
     "media queries",
     "image",
+    "lazyload",
+    "lazy load",
     "loader"
   ],
   "license": "MIT",
@@ -24,6 +26,8 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "source-media-query-builder": "^0.1.0"
+    "scroll-resize": "^0.1.4",
+    "source-media-query-builder": "^0.1.0",
+    "viewport-funcs": "^0.1.2"
   }
 }

@@ -65,9 +65,13 @@ Add all `<source>` child of `node`
 ql.find(document.querySelector('#ref'))
 ```
 
-#### start()
+#### start([node], [offset])
 
 Start the instance
+
+If `node` is defined, starts the lazy loading mode. The image will be loaded if `node` will enter the viewport
+
+The argument `offset` is only used in lazy mode. The argument is optional, default to `200`
 
 #### stop()
 

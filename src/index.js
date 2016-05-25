@@ -1,6 +1,8 @@
 
 const QueryLoader = require('..')
 
+var img = document.querySelector('img')
+
 var buttons = [].slice.call(document.querySelectorAll('button'))
 buttons.forEach(e => e.action = e.getAttribute('action'))
 
@@ -20,7 +22,7 @@ buttons.forEach(e => e.addEventListener('click', (e) => {
   if (!ql) {
     ql = QueryLoader(function(data) {
       console.log('cb data:', data)
-      document.querySelector('img').src = data.src
+      img.src = data.src
     })
   }
 
@@ -51,10 +53,18 @@ buttons.forEach(e => e.addEventListener('click', (e) => {
   else if (action == 'start') {
     ql.start()
   }
+  else if (action == 'start-node') {
+    ql.start(img, 200)
+    // ql.start(12, 200)
+    // ql.start(document.createElement('img'), 200)
+  }
   else if (action == 'stop') {
     ql.stop()
   }
   else if (action == 'kill') {
     ql.kill()
+  }
+  else if (action == 'margin') {
+    document.querySelector('.no-margin').classList.add('margin')
   }
 }))

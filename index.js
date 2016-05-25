@@ -1,20 +1,24 @@
 
 const builder = require('source-media-query-builder')
+const contains = require('viewport-funcs').contains
+const Watcher = require('scroll-resize')
 
 module.exports = QueryLoader
 
 const started = 'started'
 const stopped = 'stopped'
 const killed  = 'killed'
-var prev = 0
 
 function QueryLoader(cb) {
   if (!(this instanceof QueryLoader)) return new QueryLoader(cb)
 
   this.cb = cb
   this.arr = []
+  this.prev = 0
+  this.watching = false
   this.status = stopped
   this.check = bind(this, this.check)
+  this.update = bind(this, this.update)
 }
 
 QueryLoader.prototype.add = function(data) {
@@ -49,11 +53,43 @@ QueryLoader.prototype.find = function(node) {
   }
 }
 
-QueryLoader.prototype.check = function() {
+QueryLoader.prototype.start = function(node, offset) {
+  if (this.status == stopped) {
+    this.status = started
+    if (inBody(node)) this.watch(node, offset)
+    else this.check()
+  }
+}
+
+QueryLoader.prototype.watch = function(node, offset) {
+  this.watching = true
+  this.node = node
+  this.offset = offset == undefined ? 200 : offset
+  this.watcher = new Watcher(this.update, {silent:true})
+  this.watcher.start()
+}
+
+QueryLoader.prototype.update = function() {
   if (this.status != started) return
+  if (contains(this.node, this.offset)) {
+    this.unwatch()
+    this.check()
+  }
+}
+
+QueryLoader.prototype.unwatch = function() {
+  this.watching = false
+  if (this.watcher) {
+    this.watcher.stop()
+    this.watcher = null
+  }
+}
+
+QueryLoader.prototype.check = function() {
+  if (this.status != started || this.watching === true) return
   var now = Date.now()
-  if (now - prev < 20) return
-  prev = now
+  if (now - this.prev < 20) return
+  this.prev = now
 
   for (var i = 0, n = this.arr.length; i < n; i++) {
     if (this.arr[i].mql.matches) {
@@ -65,23 +101,20 @@ QueryLoader.prototype.check = function() {
   return -1
 }
 
-QueryLoader.prototype.start = function() {
-  if (this.status == stopped) {
-    this.status = started
-    this.check()
-  }
-}
 QueryLoader.prototype.stop = function() {
   if (this.status == started) {
     this.status = stopped
+    this.unwatch()
   }
 }
+
 QueryLoader.prototype.kill = function() {
   this.status = killed
   for (var i = 0, n = this.arr.length; i < n; i++) {
     this.arr[i].mql.removeListener(this.check)
   }
   this.arr.length = 0
+  this.unwatch()
 }
 
 // fast bind -- from https://github.com/component/bind
@@ -89,6 +122,13 @@ function bind(ctx, fn) {
   return function() {
     return fn.apply(ctx, [].slice.call(arguments))
   }
+}
+
+// check if it's a node on the page
+function inBody(node) {
+  return node
+    && node.nodeType == 1
+    && document.body.contains(node)
 }
 
 // check if it's a valid node
